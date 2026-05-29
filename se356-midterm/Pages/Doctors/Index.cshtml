@@ -1,0 +1,37 @@
+@page
+@model se356_midterm.Pages.Doctors.IndexModel
+@{
+    ViewData["Title"] = "Doctors";
+}
+
+<div class="container mt-4">
+    <h2>Doctors</h2>
+    <a class="btn btn-primary mb-3" href="/Doctors/Create">Add New Doctor</a>
+    
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.listDoctors)
+        {
+            <tr>
+                <td>@item.DoctorID</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.DepartmentName</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" href="/Doctors/Edit?id=@item.DoctorID">Edit</a>
+                    <a class="btn btn-sm btn-danger" href="/Doctors/Delete?id=@item.DoctorID">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

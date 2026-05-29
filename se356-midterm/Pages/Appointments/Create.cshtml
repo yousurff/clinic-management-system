@@ -1,0 +1,49 @@
+@page
+@model se356_midterm.Pages.Appointments.CreateModel
+@{
+    ViewData["Title"] = "Create New Appointment";
+}
+
+<div class="container mt-4">
+    <h2>Create New Appointment</h2>
+
+    @if (Model.errorMessage.Length > 0)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> @Model.errorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">Select Patient</label>
+            <select class="form-select" name="patientID">
+                <option value="">-- Select Patient --</option>
+                @foreach (var patient in Model.listPatients)
+                {
+                    <option value="@patient.PatientID">@patient.FirstName @patient.LastName</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Select Doctor</label>
+            <select class="form-select" name="doctorID">
+                <option value="">-- Select Doctor --</option>
+                @foreach (var doctor in Model.listDoctors)
+                {
+                    <option value="@doctor.DoctorID">Dr. @doctor.FirstName @doctor.LastName</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Date and Time</label>
+            <input type="datetime-local" class="form-control" name="appointmentDate">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Appointment</button>
+        <a class="btn btn-outline-secondary" href="/Appointments/Index">Cancel</a>
+    </form>
+</div>

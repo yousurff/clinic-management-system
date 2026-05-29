@@ -1,0 +1,33 @@
+@page
+@model se356_midterm.Pages.Departments.IndexModel
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<div class="container mt-4">
+    <h2>Departments</h2>
+    <a class="btn btn-primary mb-3" href="/Departments/Create">Add New Department</a>
+    
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Department Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.listDepartments)
+        {
+            <tr>
+                <td>@item.DepartmentID</td>
+                <td>@item.DepartmentName</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" href="/Departments/Edit?id=@item.DepartmentID">Edit</a>
+                    <a class="btn btn-sm btn-danger" href="/Departments/Delete?id=@item.DepartmentID">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
