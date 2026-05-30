@@ -1,0 +1,26 @@
+@model ClinicManagementSystem.Models.Patient
+    @{ ViewData["Title"] = "Hasta Düzenle"; }
+
+<h2>Hasta Düzenle</h2>
+
+    <form asp-action="Edit">
+    <input type="hidden" asp-for="PatientID" />
+    <div class="mb-3">
+    <label asp-for="FirstName" class="form-label">Ad</label>
+    <input asp-for="FirstName" class="form-control" />
+    </div>
+    <div class="mb-3">
+    <label asp-for="LastName" class="form-label">Soyad</label>
+    <input asp-for="LastName" class="form-control" />
+    </div>
+    <div class="mb-3">
+    <label asp-for="Phone" class="form-label">Telefon</label>
+    <input asp-for="Phone" class="form-control" />
+    </div>
+    <div class="mb-3">
+    <label asp-for="BirthDate" class="form-label">Doğum Tarihi</label>
+    <input asp-for="BirthDate" type="date" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+    </form>
