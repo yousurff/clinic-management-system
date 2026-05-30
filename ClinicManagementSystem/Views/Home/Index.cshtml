@@ -1,8 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@{ ViewData["Title"] = "Dashboard"; }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-teal"><i class="bi bi-people"></i></div>
+        <div><div class="stat-value">@ViewBag.PatientCount</div><div class="stat-label">Toplam Hasta</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-blue"><i class="bi bi-person-badge"></i></div>
+        <div><div class="stat-value">@ViewBag.DoctorCount</div><div class="stat-label">Toplam Doktor</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-violet"><i class="bi bi-building"></i></div>
+        <div><div class="stat-value">@ViewBag.DepartmentCount</div><div class="stat-label">Bölüm</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-amber"><i class="bi bi-calendar-check"></i></div>
+        <div><div class="stat-value">@ViewBag.AppointmentCount</div><div class="stat-label">Randevu</div></div>
+    </div>
+</div>
+
+<div class="card" style="margin-top:24px;">
+    <div class="card-body">
+        <h3 style="margin-top:0;">Hoş geldin 👋</h3>
+        <p class="text-muted" style="margin:0;">Klinik Yönetim Sistemi paneli. Sol menüden hasta, doktor, bölüm ve randevuları yönetebilirsin. Grafikler ve raporlar yakında bu panele eklenecek.</p>
+    </div>
 </div>

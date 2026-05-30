@@ -1,5 +1,10 @@
 @model IEnumerable<ClinicManagementSystem.Models.Patient>
-    @{ ViewData["Title"] = "Hastalar"; }
+@{ ViewData["Title"] = "Hastalar"; }
+
+<div class="page-head">
+    <h2>Hastalar</h2>
+    <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Hasta</a>
+</div>
 
 <h2>Hastalar</h2>
     <a class="btn btn-primary mb-3" asp-action="Create">Yeni Hasta Ekle</a>

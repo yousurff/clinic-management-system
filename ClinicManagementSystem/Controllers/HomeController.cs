@@ -1,27 +1,30 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ClinicManagementSystem.Data;
 using ClinicManagementSystem.Models;
 
 namespace ClinicManagementSystem.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(AppDbContext context)
     {
-        _logger = logger;
+        _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        ViewBag.PatientCount = await _context.Patients.CountAsync();
+        ViewBag.DoctorCount = await _context.Doctors.CountAsync();
+        ViewBag.DepartmentCount = await _context.Departments.CountAsync();
+        ViewBag.AppointmentCount = await _context.Appointments.CountAsync();
         return View();
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    public IActionResult Privacy() => View();
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

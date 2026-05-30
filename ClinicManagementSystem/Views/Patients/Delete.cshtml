@@ -1,16 +1,20 @@
 @model ClinicManagementSystem.Models.Patient
-    @{ ViewData["Title"] = "Hasta Sil"; }
+@{ ViewData["Title"] = "Yeni Hasta"; }
 
-<h2>Bu hastayı silmek istediğine emin misin?</h2>
+<div class="card" style="max-width:600px;">
+    <div class="card-body">
+        <h2>Bu hastayı silmek istediğine emin misin?</h2>
 
-    <dl class="row">
-    <dt class="col-sm-2">Ad</dt><dd class="col-sm-10">@Model.FirstName</dd>
-    <dt class="col-sm-2">Soyad</dt><dd class="col-sm-10">@Model.LastName</dd>
-    <dt class="col-sm-2">Telefon</dt><dd class="col-sm-10">@Model.Phone</dd>
-    </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Ad</dt><dd class="col-sm-10">@Model.FirstName</dd>
+            <dt class="col-sm-2">Soyad</dt><dd class="col-sm-10">@Model.LastName</dd>
+            <dt class="col-sm-2">Telefon</dt><dd class="col-sm-10">@Model.Phone</dd>
+        </dl>
 
-    <form asp-action="Delete">
-    <input type="hidden" asp-for="PatientID" />
-    <button type="submit" class="btn btn-danger">Sil</button>
-    <a asp-action="Index" class="btn btn-secondary">İptal</a>
-    </form>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="PatientID" />
+            <button type="submit" class="btn btn-danger">Sil</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>
