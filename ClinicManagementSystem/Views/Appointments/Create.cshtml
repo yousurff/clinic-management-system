@@ -1,9 +1,16 @@
 @model ClinicManagementSystem.Models.Appointment
-@{ ViewData["Title"] = "Yeni Randevu"; }
+@{
+    ViewData["Title"] = "Yeni Randevu";
+    var slots = new List<string>();
+    for (var t = new TimeSpan(8, 0, 0); t <= new TimeSpan(17, 0, 0); t += TimeSpan.FromMinutes(15))
+        slots.Add(t.ToString(@"hh\:mm"));
+    var selTime = ViewBag.SelTime as string;
+}
 
 <div class="card" style="max-width:600px;">
     <div class="card-body">
         <h2>Yeni Randevu</h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
         <form asp-action="Create">
             <div class="mb-3">
                 <label asp-for="PatientID" class="form-label">Hasta</label>
@@ -32,8 +39,20 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label asp-for="AppointmentDate" class="form-label">Tarih ve Saat</label>
-                <input asp-for="AppointmentDate" type="datetime-local" class="form-control" />
+                <label class="form-label">Tarih</label>
+                <input type="date" name="apptDate" id="apptDate" class="form-control" required
+                       value="@(ViewBag.SelDate)" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Saat</label>
+                <input type="hidden" name="apptTime" id="apptTime" value="@selTime" />
+                <div class="slot-grid">
+                    @foreach (var s in slots)
+                    {
+                        <button type="button" class="slot @(selTime == s ? "active" : "")" data-time="@s">@s</button>
+                    }
+                </div>
+                <small class="text-muted">Önce doktor ve tarih seç; dolu saatler soluk görünür ve seçilemez.</small>
             </div>
             <div class="mb-3">
                 <label asp-for="Notes" class="form-label">Notlar</label>
@@ -48,18 +67,55 @@
 @section Scripts {
 <script>
     (function () {
+        const booked = @Html.Raw(ViewBag.BookedJson ?? "[]");
         const deptFilter = document.getElementById('deptFilter');
         const doctorSelect = document.getElementById('doctorSelect');
-        if (!deptFilter || !doctorSelect) return;
-        deptFilter.addEventListener('change', function () {
-            const dept = this.value;
-            Array.from(doctorSelect.options).forEach(function (opt) {
-                if (!opt.value) return;
-                opt.hidden = dept && opt.getAttribute('data-dept') !== dept;
+        const dateInput = document.getElementById('apptDate');
+        const hidden = document.getElementById('apptTime');
+
+        function refreshSlots() {
+            const doc = doctorSelect ? doctorSelect.value : '';
+            const date = dateInput ? dateInput.value : '';
+            const taken = new Set(
+                booked.filter(b => String(b.doctorId) === String(doc) && b.slot.indexOf(date) === 0)
+                      .map(b => b.slot.substring(11))
+            );
+            document.querySelectorAll('.slot').forEach(function (btn) {
+                const isTaken = !!(doc && date && taken.has(btn.dataset.time));
+                btn.classList.toggle('taken', isTaken);
+                btn.disabled = isTaken;
+                if (isTaken && hidden.value === btn.dataset.time) {
+                    hidden.value = '';
+                    btn.classList.remove('active');
+                }
             });
-            const sel = doctorSelect.options[doctorSelect.selectedIndex];
-            if (sel && sel.hidden) doctorSelect.value = '';
+        }
+
+        if (deptFilter && doctorSelect) {
+            deptFilter.addEventListener('change', function () {
+                const dept = this.value;
+                Array.from(doctorSelect.options).forEach(function (opt) {
+                    if (!opt.value) return;
+                    opt.hidden = dept && opt.getAttribute('data-dept') !== dept;
+                });
+                const sel = doctorSelect.options[doctorSelect.selectedIndex];
+                if (sel && sel.hidden) doctorSelect.value = '';
+                refreshSlots();
+            });
+        }
+
+        document.querySelectorAll('.slot').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                if (this.disabled) return;
+                document.querySelectorAll('.slot').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                hidden.value = this.dataset.time;
+            });
         });
+
+        if (doctorSelect) doctorSelect.addEventListener('change', refreshSlots);
+        if (dateInput) dateInput.addEventListener('change', refreshSlots);
+        refreshSlots();
     })();
 </script>
 }

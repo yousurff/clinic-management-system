@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClinicManagementSystem.Data;
 using ClinicManagementSystem.Models;
+using System.Globalization;
 
 namespace ClinicManagementSystem.Controllers;
 
@@ -69,10 +70,37 @@ public class PortalController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Book(int doctorId, DateTime appointmentDate, string? notes)
+    public async Task<IActionResult> Book(int doctorId, string apptDate, string apptTime, string? notes)
     {
         var patient = await CurrentPatientAsync();
         if (patient == null) return NotFound();
+
+        string? error;
+        if (!DateTime.TryParseExact($"{apptDate} {apptTime}", "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var appointmentDate))
+            error = "Lütfen tarih ve saat seçin.";
+        else
+            error = AppointmentRules.Validate(appointmentDate);
+
+        if (error == null)
+        {
+            var slotUtc = DateTime.SpecifyKind(appointmentDate, DateTimeKind.Utc);
+            bool taken = await _context.Appointments.AnyAsync(a =>
+                a.DoctorID == doctorId && a.AppointmentDate == slotUtc && a.Status != AppointmentStatus.Cancelled);
+            if (taken) error = "Bu doktor için seçtiğiniz saat dolu. Lütfen başka bir saat seçin.";
+        }
+
+        if (error != null)
+        {
+            ViewBag.Error = error;
+            ViewBag.SelDoctor = doctorId;
+            ViewBag.SelDate = apptDate;
+            ViewBag.SelTime = apptTime;
+            ViewBag.SelNotes = notes;
+            await PopulateDoctorDropdown();
+            return View();
+        }
+
         _context.Appointments.Add(new Appointment
         {
             PatientID = patient.PatientID,
@@ -126,5 +154,12 @@ public class PortalController : Controller
     {
         ViewBag.DoctorList = await _context.Doctors.Include(d => d.Department).ToListAsync();
         ViewBag.DepartmentList = await _context.Departments.ToListAsync();
+
+        var booked = await _context.Appointments
+            .Where(a => a.Status != AppointmentStatus.Cancelled)
+            .Select(a => new { a.DoctorID, a.AppointmentDate })
+            .ToListAsync();
+        ViewBag.BookedJson = System.Text.Json.JsonSerializer.Serialize(
+            booked.Select(b => new { doctorId = b.DoctorID, slot = b.AppointmentDate.ToString("yyyy-MM-dd HH:mm") }));
     }
 }

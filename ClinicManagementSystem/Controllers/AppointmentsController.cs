@@ -5,6 +5,7 @@ using ClinicManagementSystem.Data;
 using ClinicManagementSystem.Models;
 using ClosedXML.Excel;
 using QuestPDF.Fluent;
+using System.Globalization;
 
 namespace ClinicManagementSystem.Controllers;
 using Microsoft.AspNetCore.Authorization;
@@ -50,8 +51,30 @@ public class AppointmentsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Appointment appointment)
+    public async Task<IActionResult> Create(Appointment appointment, string apptDate, string apptTime)
     {
+        if (!DateTime.TryParseExact($"{apptDate} {apptTime}", "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+        {
+            ModelState.AddModelError("apptDate", "Lütfen tarih ve saat seçin.");
+        }
+        else
+        {
+            appointment.AppointmentDate = dt;
+            var error = AppointmentRules.Validate(dt);
+            if (error != null)
+            {
+                ModelState.AddModelError("apptDate", error);
+            }
+            else
+            {
+                var slotUtc = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+                bool taken = await _context.Appointments.AnyAsync(a =>
+                    a.DoctorID == appointment.DoctorID && a.AppointmentDate == slotUtc && a.Status != AppointmentStatus.Cancelled);
+                if (taken) ModelState.AddModelError("apptDate", "Bu doktor için seçtiğiniz saat dolu. Lütfen başka bir saat seçin.");
+            }
+        }
+
         if (ModelState.IsValid)
         {
             appointment.Status = AppointmentStatus.Pending; // yeni randevu her zaman Pending
@@ -60,6 +83,8 @@ public class AppointmentsController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        ViewBag.SelDate = apptDate;
+        ViewBag.SelTime = apptTime;
         await PopulateDropdowns(appointment);
         return View(appointment);
     }
@@ -133,6 +158,13 @@ public class AppointmentsController : Controller
 
         ViewBag.DoctorList = await _context.Doctors.Include(d => d.Department).ToListAsync();
         ViewBag.DepartmentList = await _context.Departments.ToListAsync();
+
+        var booked = await _context.Appointments
+            .Where(a => a.Status != AppointmentStatus.Cancelled)
+            .Select(a => new { a.DoctorID, a.AppointmentDate })
+            .ToListAsync();
+        ViewBag.BookedJson = System.Text.Json.JsonSerializer.Serialize(
+            booked.Select(b => new { doctorId = b.DoctorID, slot = b.AppointmentDate.ToString("yyyy-MM-dd HH:mm") }));
     }
     
     public async Task<IActionResult> ExportExcel()
