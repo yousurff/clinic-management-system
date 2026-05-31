@@ -1,7 +1,10 @@
 ﻿@{
     var ctrl = ViewContext.RouteData.Values["controller"]?.ToString();
+    var act = ViewContext.RouteData.Values["action"]?.ToString();
     string Active(string c) => ctrl == c ? "active" : "";
+    string ActiveA(string c, string a) => (ctrl == c && act == a) ? "active" : "";
 }
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -35,8 +38,10 @@
             }
             @if (User.IsInRole("Patient"))
             {
-                <a class="nav-link-item @Active("Portal")" asp-controller="Portal" asp-action="Index"><i class="bi bi-calendar-check"></i><span>Randevularım</span></a>
-                <a class="nav-link-item" asp-controller="Portal" asp-action="Book"><i class="bi bi-plus-circle"></i><span>Randevu Al</span></a>
+                <a class="nav-link-item @ActiveA("Portal","Index")" asp-controller="Portal" asp-action="Index"><i class="bi bi-house"></i><span>Ana Sayfa</span></a>
+                <a class="nav-link-item @ActiveA("Portal","Book")" asp-controller="Portal" asp-action="Book"><i class="bi bi-plus-circle"></i><span>Randevu Al</span></a>
+                <a class="nav-link-item @ActiveA("Portal","Doctors")" asp-controller="Portal" asp-action="Doctors"><i class="bi bi-person-badge"></i><span>Doktorlar</span></a>
+                <a class="nav-link-item @ActiveA("Portal","Profile")" asp-controller="Portal" asp-action="Profile"><i class="bi bi-person"></i><span>Profilim</span></a>
             }
         </nav>
     </aside>

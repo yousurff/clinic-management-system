@@ -1,0 +1,27 @@
+@model IEnumerable<ClinicManagementSystem.Models.Doctor>
+@{ ViewData["Title"] = "Doktorlar"; }
+
+<div class="page-head"><h2>Doktorlarımız</h2></div>
+
+<form method="get" class="filter-bar">
+    <select name="departmentId" class="form-select" asp-items="ViewBag.Departments">
+        <option value="">Tüm bölümler</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filtrele</button>
+    <a asp-action="Doctors" class="btn btn-secondary">Temizle</a>
+</form>
+
+<div class="doctor-grid">
+    @foreach (var d in Model)
+    {
+        <div class="doctor-card">
+            <div class="doctor-avatar"><i class="bi bi-person"></i></div>
+            <div class="doctor-name">Dr. @d.FirstName @d.LastName</div>
+            <div class="doctor-dept">@d.Department?.Name</div>
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <p class="text-muted">Doktor bulunamadı.</p>
+    }
+</div>

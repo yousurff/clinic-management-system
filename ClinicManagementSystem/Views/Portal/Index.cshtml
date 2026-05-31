@@ -1,37 +1,80 @@
 @using ClinicManagementSystem.Models
 @model IEnumerable<ClinicManagementSystem.Models.Appointment>
-@{ ViewData["Title"] = "Randevularım"; }
+@{
+    ViewData["Title"] = "Ana Sayfa";
+    var next = ViewBag.Next as Appointment;
+}
 
-<div class="page-head">
-    <h2>Randevularım</h2>
+<div class="welcome-banner">
+    <div>
+        <h2 style="margin:0;">Merhaba, @ViewBag.PatientName 👋</h2>
+        <p class="text-muted" style="margin:4px 0 0;">Klinik portalına hoş geldin. Buradan randevu alabilir ve takip edebilirsin.</p>
+    </div>
     <a class="btn btn-primary" asp-action="Book"><i class="bi bi-plus-lg"></i> Randevu Al</a>
 </div>
 
-<table class="table">
-    <thead><tr><th>Doktor</th><th>Bölüm</th><th>Tarih</th><th>Durum</th><th>Not</th><th>İşlem</th></tr></thead>
-    <tbody>
-    @foreach (var a in Model)
-    {
-        <tr>
-            <td>Dr. @a.Doctor?.FirstName @a.Doctor?.LastName</td>
-            <td>@a.Doctor?.Department?.Name</td>
-            <td>@a.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</td>
-            <td><span class="status-badge status-@a.Status">@a.Status</span></td>
-            <td class="text-muted">@a.Notes</td>
-            <td>
-                @if (a.Status == AppointmentStatus.Pending || a.Status == AppointmentStatus.Approved)
-                {
-                    <form asp-action="Cancel" method="post">
-                        <input type="hidden" name="id" value="@a.AppointmentID" />
-                        <button type="submit" class="btn btn-sm btn-danger">İptal Et</button>
-                    </form>
-                }
-            </td>
-        </tr>
-    }
-    @if (!Model.Any())
-    {
-        <tr><td colspan="5" class="text-muted">Henüz randevun yok.</td></tr>
-    }
-    </tbody>
-</table>
+<div class="stats-grid" style="margin-top:20px;">
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-teal"><i class="bi bi-calendar-check"></i></div>
+        <div><div class="stat-value">@ViewBag.TotalCount</div><div class="stat-label">Toplam Randevu</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-amber"><i class="bi bi-hourglass-split"></i></div>
+        <div><div class="stat-value">@ViewBag.PendingCount</div><div class="stat-label">Bekleyen</div></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-blue"><i class="bi bi-check-circle"></i></div>
+        <div><div class="stat-value">@ViewBag.ApprovedCount</div><div class="stat-label">Onaylı</div></div>
+    </div>
+</div>
+
+@if (next != null)
+{
+    <div class="card" style="margin-top:24px;">
+        <div class="card-body">
+            <h3 style="margin-top:0;">Sıradaki Randevun</h3>
+            <div class="next-appt">
+                <div class="next-appt-icon"><i class="bi bi-calendar-event"></i></div>
+                <div>
+                    <div class="appt-main">Dr. @next.Doctor?.FirstName @next.Doctor?.LastName — @next.Doctor?.Department?.Name</div>
+                    <div class="appt-sub">@next.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</div>
+                </div>
+                <span class="status-badge status-@next.Status" style="margin-left:auto;">@next.Status</span>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="card" style="margin-top:24px;">
+    <div class="card-body">
+        <h3 style="margin-top:0;">Randevu Geçmişim</h3>
+        <table class="table">
+            <thead><tr><th>Doktor</th><th>Bölüm</th><th>Tarih</th><th>Durum</th><th>Not</th><th>İşlem</th></tr></thead>
+            <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>Dr. @a.Doctor?.FirstName @a.Doctor?.LastName</td>
+                    <td>@a.Doctor?.Department?.Name</td>
+                    <td>@a.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td><span class="status-badge status-@a.Status">@a.Status</span></td>
+                    <td class="text-muted">@a.Notes</td>
+                    <td>
+                        @if (a.Status == AppointmentStatus.Pending || a.Status == AppointmentStatus.Approved)
+                        {
+                            <form asp-action="Cancel" method="post">
+                                <input type="hidden" name="id" value="@a.AppointmentID" />
+                                <button type="submit" class="btn btn-sm btn-danger">İptal Et</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="6" class="text-muted">Henüz randevun yok.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

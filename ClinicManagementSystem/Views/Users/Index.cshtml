@@ -3,6 +3,19 @@
 
 <div class="page-head"><h2>Kullanıcılar</h2></div>
 
+<form method="get" class="filter-bar">
+    <input name="search" value="@ViewBag.Search" class="form-control" placeholder="E-posta ara..." />
+    <select name="role" class="form-select">
+        <option value="">Tüm roller</option>
+        <option value="Admin" selected="@(ViewBag.Role == "Admin")">Admin</option>
+        <option value="Doctor" selected="@(ViewBag.Role == "Doctor")">Doctor</option>
+        <option value="Receptionist" selected="@(ViewBag.Role == "Receptionist")">Receptionist</option>
+        <option value="Patient" selected="@(ViewBag.Role == "Patient")">Patient</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filtrele</button>
+    <a asp-action="Index" class="btn btn-secondary">Temizle</a>
+</form>
+
 <table class="table">
     <thead><tr><th>E-posta</th><th>Roller</th><th>Şifre Sıfırla</th></tr></thead>
     <tbody>
