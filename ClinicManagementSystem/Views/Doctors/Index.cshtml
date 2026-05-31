@@ -1,0 +1,27 @@
+@model IEnumerable<ClinicManagementSystem.Models.Doctor>
+@{ ViewData["Title"] = "Doktorlar"; }
+
+<div class="page-head">
+    <h2>Doktorlar</h2>
+    <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Doktor</a>
+</div>
+
+<table class="table">
+    <thead><tr><th>ID</th><th>Ad</th><th>Soyad</th><th>Bölüm</th><th>Telefon</th><th>İşlemler</th></tr></thead>
+    <tbody>
+    @foreach (var d in Model)
+    {
+        <tr>
+            <td>@d.DoctorID</td>
+            <td>@d.FirstName</td>
+            <td>@d.LastName</td>
+            <td>@d.Department?.Name</td>
+            <td>@d.Phone</td>
+            <td>
+                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@d.DoctorID">Düzenle</a>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@d.DoctorID">Sil</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

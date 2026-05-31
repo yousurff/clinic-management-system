@@ -1,0 +1,24 @@
+@model IEnumerable<ClinicManagementSystem.Models.Department>
+@{ ViewData["Title"] = "Bölümler"; }
+
+<div class="page-head">
+    <h2>Bölümler</h2>
+    <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Bölüm</a>
+</div>
+
+<table class="table">
+    <thead><tr><th>ID</th><th>Bölüm Adı</th><th>İşlemler</th></tr></thead>
+    <tbody>
+    @foreach (var d in Model)
+    {
+        <tr>
+            <td>@d.DepartmentID</td>
+            <td>@d.Name</td>
+            <td>
+                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@d.DepartmentID">Düzenle</a>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@d.DepartmentID">Sil</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

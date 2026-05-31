@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ClinicManagementSystem.Models;
 
 namespace ClinicManagementSystem.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -14,7 +15,7 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Randevu durumunu veritabanında 0/1/2 yerine "Pending" gibi metin olarak sakla
+        base.OnModelCreating(modelBuilder); // Identity tabloları için ŞART
         modelBuilder.Entity<Appointment>()
             .Property(a => a.Status)
             .HasConversion<string>();

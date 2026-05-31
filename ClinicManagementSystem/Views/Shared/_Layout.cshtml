@@ -32,6 +32,13 @@
             <button class="icon-btn" id="sidebarToggle"><i class="bi bi-list"></i></button>
             <h1 class="page-title">@ViewData["Title"]</h1>
             <div class="topbar-actions">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <span class="topbar-user"><i class="bi bi-person-circle"></i> @User.Identity.Name</span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                        <button type="submit" class="icon-btn" title="Çıkış"><i class="bi bi-box-arrow-right"></i></button>
+                    </form>
+                }
                 <button class="icon-btn" id="themeToggle" title="Tema değiştir"><i class="bi bi-moon-stars"></i></button>
             </div>
         </header>

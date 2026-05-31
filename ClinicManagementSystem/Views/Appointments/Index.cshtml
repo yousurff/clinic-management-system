@@ -1,0 +1,54 @@
+@using ClinicManagementSystem.Models
+@model IEnumerable<ClinicManagementSystem.Models.Appointment>
+@{ ViewData["Title"] = "Randevular"; }
+
+<div class="page-head">
+    <h2>Randevular</h2>
+    <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Randevu</a>
+</div>
+
+<div class="board">
+    @foreach (var status in Enum.GetValues<AppointmentStatus>())
+    {
+        var items = Model.Where(a => a.Status == status).ToList();
+        <div class="board-col">
+            <div class="board-col-head">
+                <span class="status-badge status-@status">@status</span>
+                <span class="board-count">@items.Count</span>
+            </div>
+            <div class="board-cards">
+                @foreach (var a in items)
+                {
+                    <div class="appt-card">
+                        <div class="appt-card-main">@a.Patient?.FirstName @a.Patient?.LastName</div>
+                        <div class="appt-card-sub">Dr. @a.Doctor?.FirstName @a.Doctor?.LastName</div>
+                        <div class="appt-card-sub">@a.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</div>
+                        <div class="appt-card-actions">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-secondary" data-bs-toggle="dropdown">Durum ▾</button>
+                                <ul class="dropdown-menu">
+                                    @foreach (var s in Enum.GetValues<AppointmentStatus>())
+                                    {
+                                        <li>
+                                            <form asp-action="ChangeStatus" method="post">
+                                                <input type="hidden" name="id" value="@a.AppointmentID" />
+                                                <input type="hidden" name="status" value="@s" />
+                                                <button type="submit" class="dropdown-item">@s</button>
+                                            </form>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@a.AppointmentID">Düzenle</a>
+                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@a.AppointmentID">Sil</a>
+                        </div>
+                    </div>
+                }
+                @if (items.Count == 0)
+                {
+                    <div class="board-empty">—</div>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,19 @@
+@model ClinicManagementSystem.Models.Appointment
+@{ ViewData["Title"] = "Randevu Sil"; }
+
+<div class="card" style="max-width:600px;">
+    <div class="card-body">
+        <h2>Bu randevuyu silmek istediğine emin misin?</h2>
+        <dl class="row">
+            <dt class="col-sm-3">Hasta</dt><dd class="col-sm-9">@Model.Patient?.FirstName @Model.Patient?.LastName</dd>
+            <dt class="col-sm-3">Doktor</dt><dd class="col-sm-9">@Model.Doctor?.FirstName @Model.Doctor?.LastName</dd>
+            <dt class="col-sm-3">Tarih</dt><dd class="col-sm-9">@Model.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</dd>
+            <dt class="col-sm-3">Durum</dt><dd class="col-sm-9"><span class="status-badge status-@Model.Status">@Model.Status</span></dd>
+        </dl>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="AppointmentID" />
+            <button type="submit" class="btn btn-danger">Sil</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>

@@ -1,4 +1,9 @@
-﻿@{ ViewData["Title"] = "Dashboard"; }
+﻿@using ClinicManagementSystem.Models
+@{
+    ViewData["Title"] = "Dashboard";
+    var pending = (List<Appointment>)ViewBag.Pending;
+    var approved = (List<Appointment>)ViewBag.Approved;
+}
 
 <div class="stats-grid">
     <div class="stat-card">
@@ -21,7 +26,70 @@
 
 <div class="card" style="margin-top:24px;">
     <div class="card-body">
-        <h3 style="margin-top:0;">Hoş geldin 👋</h3>
-        <p class="text-muted" style="margin:0;">Klinik Yönetim Sistemi paneli. Sol menüden hasta, doktor, bölüm ve randevuları yönetebilirsin. Grafikler ve raporlar yakında bu panele eklenecek.</p>
+        <h3 style="margin-top:0;">Onay Bekleyen Randevular</h3>
+        @if (pending.Count == 0)
+        {
+            <p class="text-muted" style="margin:0;">Onay bekleyen randevu yok.</p>
+        }
+        else
+        {
+            <div class="appt-list">
+                @foreach (var a in pending)
+                {
+                    <div class="appt-row">
+                        <div>
+                            <div class="appt-main">@a.Patient?.FirstName @a.Patient?.LastName — Dr. @a.Doctor?.FirstName @a.Doctor?.LastName</div>
+                            <div class="appt-sub">@a.Doctor?.Department?.Name • @a.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</div>
+                        </div>
+                        <form asp-controller="Home" asp-action="Approve" method="post">
+                            <input type="hidden" name="id" value="@a.AppointmentID" />
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-lg"></i> Kabul Et</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card" style="margin-top:24px;">
+    <div class="card-body">
+        <h3 style="margin-top:0;">Onaylanmış Randevular</h3>
+        @if (approved.Count == 0)
+        {
+            <p class="text-muted" style="margin:0;">Onaylanmış randevu yok.</p>
+        }
+        else
+        {
+            <div class="appt-list">
+                @foreach (var a in approved)
+                {
+                    var remaining = a.AppointmentDate - DateTime.Now;
+                    var passed = remaining.TotalSeconds <= 0;
+                    <div class="appt-row">
+                        <div>
+                            <div class="appt-main">@a.Patient?.FirstName @a.Patient?.LastName — Dr. @a.Doctor?.FirstName @a.Doctor?.LastName</div>
+                            <div class="appt-sub">
+                                @a.Doctor?.Department?.Name • @a.AppointmentDate.ToString("dd.MM.yyyy HH:mm")
+                                @if (passed)
+                                {
+                                    <span class="time-left passed">• Randevu zamanı geldi</span>
+                                }
+                                else
+                                {
+                                    <span class="time-left">• @((int)remaining.TotalDays) gün @remaining.Hours saat @remaining.Minutes dk kaldı</span>
+                                }
+                            </div>
+                        </div>
+                        <form asp-controller="Home" asp-action="Complete" method="post">
+                            <input type="hidden" name="id" value="@a.AppointmentID" />
+                            <button type="submit" class="btn btn-sm @(passed ? "btn-primary" : "btn-secondary")" disabled="@(passed ? null : "disabled")">
+                                <i class="bi bi-flag"></i> Randevuyu Bitir
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
     </div>
 </div>

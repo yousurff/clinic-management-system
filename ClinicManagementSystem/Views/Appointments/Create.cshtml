@@ -1,0 +1,65 @@
+@model ClinicManagementSystem.Models.Appointment
+@{ ViewData["Title"] = "Yeni Randevu"; }
+
+<div class="card" style="max-width:600px;">
+    <div class="card-body">
+        <h2>Yeni Randevu</h2>
+        <form asp-action="Create">
+            <div class="mb-3">
+                <label asp-for="PatientID" class="form-label">Hasta</label>
+                <select asp-for="PatientID" class="form-select" asp-items="ViewBag.Patients">
+                    <option value="">-- Hasta seçin --</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Branş (Bölüm)</label>
+                <select id="deptFilter" class="form-select">
+                    <option value="">Tüm bölümler</option>
+                    @foreach (var dept in (List<ClinicManagementSystem.Models.Department>)ViewBag.DepartmentList)
+                    {
+                        <option value="@dept.DepartmentID">@dept.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DoctorID" class="form-label">Doktor</label>
+                <select asp-for="DoctorID" id="doctorSelect" class="form-select">
+                    <option value="">-- Doktor seçin --</option>
+                    @foreach (var d in (List<ClinicManagementSystem.Models.Doctor>)ViewBag.DoctorList)
+                    {
+                        <option value="@d.DoctorID" data-dept="@d.DepartmentID">@d.FirstName @d.LastName (@d.Department?.Name)</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="AppointmentDate" class="form-label">Tarih ve Saat</label>
+                <input asp-for="AppointmentDate" type="datetime-local" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Notes" class="form-label">Notlar</label>
+                <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    (function () {
+        const deptFilter = document.getElementById('deptFilter');
+        const doctorSelect = document.getElementById('doctorSelect');
+        if (!deptFilter || !doctorSelect) return;
+        deptFilter.addEventListener('change', function () {
+            const dept = this.value;
+            Array.from(doctorSelect.options).forEach(function (opt) {
+                if (!opt.value) return;
+                opt.hidden = dept && opt.getAttribute('data-dept') !== dept;
+            });
+            const sel = doctorSelect.options[doctorSelect.selectedIndex];
+            if (sel && sel.hidden) doctorSelect.value = '';
+        });
+    })();
+</script>
+}

@@ -1,0 +1,30 @@
+@model ClinicManagementSystem.Models.Doctor
+@{ ViewData["Title"] = "Yeni Doktor"; }
+
+<div class="card" style="max-width:600px;">
+    <div class="card-body">
+        <h2>Yeni Doktor</h2>
+        <form asp-action="Create">
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label">Ad</label>
+                <input asp-for="FirstName" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label">Soyad</label>
+                <input asp-for="LastName" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="DepartmentID" class="form-label">Bölüm</label>
+                <select asp-for="DepartmentID" class="form-select" asp-items="ViewBag.Departments">
+                    <option value="">-- Bölüm seçin --</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label">Telefon</label>
+                <input asp-for="Phone" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>

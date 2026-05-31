@@ -6,27 +6,24 @@
     <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Hasta</a>
 </div>
 
-<h2>Hastalar</h2>
-    <a class="btn btn-primary mb-3" asp-action="Create">Yeni Hasta Ekle</a>
-
-    <table class="table table-bordered table-striped">
+<table class="table">
     <thead>
     <tr><th>ID</th><th>Ad</th><th>Soyad</th><th>Telefon</th><th>Doğum Tarihi</th><th>İşlemler</th></tr>
     </thead>
     <tbody>
     @foreach (var p in Model)
-{
-    <tr>
-        <td>@p.PatientID</td>
-        <td>@p.FirstName</td>
-        <td>@p.LastName</td>
-        <td>@p.Phone</td>
-        <td>@(p.BirthDate?.ToString("yyyy-MM-dd"))</td>
-        <td>
-        <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@p.PatientID">Düzenle</a>
-        <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@p.PatientID">Sil</a>
-        </td>
+    {
+        <tr>
+            <td>@p.PatientID</td>
+            <td>@p.FirstName</td>
+            <td>@p.LastName</td>
+            <td>@p.Phone</td>
+            <td>@(p.BirthDate?.ToString("yyyy-MM-dd"))</td>
+            <td>
+                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@p.PatientID">Düzenle</a>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@p.PatientID">Sil</a>
+            </td>
         </tr>
-}
-</tbody>
-    </table>
+    }
+    </tbody>
+</table>
