@@ -12,13 +12,31 @@ public class AppointmentsController : Controller
     private readonly AppDbContext _context;
     public AppointmentsController(AppDbContext context) { _context = context; }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(DateTime? date, int? departmentId, AppointmentStatus? status)
     {
-        var appointments = await _context.Appointments
+        var query = _context.Appointments
             .Include(a => a.Patient)
-            .Include(a => a.Doctor)
-            .OrderByDescending(a => a.AppointmentDate)
-            .ToListAsync();
+            .Include(a => a.Doctor).ThenInclude(d => d.Department)
+            .AsQueryable();
+
+        if (date.HasValue)
+        {
+            var start = DateTime.SpecifyKind(date.Value.Date, DateTimeKind.Utc);
+            var end = start.AddDays(1);
+            query = query.Where(a => a.AppointmentDate >= start && a.AppointmentDate < end);
+        }
+        if (departmentId.HasValue)
+            query = query.Where(a => a.Doctor!.DepartmentID == departmentId.Value);
+        if (status.HasValue)
+            query = query.Where(a => a.Status == status.Value);
+
+        ViewBag.Date = date?.ToString("yyyy-MM-dd");
+        ViewBag.DepartmentId = departmentId;
+        ViewBag.Status = status;
+        ViewBag.Departments = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            await _context.Departments.ToListAsync(), "DepartmentID", "Name", departmentId);
+
+        var appointments = await query.OrderByDescending(a => a.AppointmentDate).ToListAsync();
         return View(appointments);
     }
 

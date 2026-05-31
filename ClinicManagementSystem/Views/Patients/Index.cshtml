@@ -6,6 +6,12 @@
     <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Hasta</a>
 </div>
 
+<form method="get" class="filter-bar">
+    <input name="search" value="@ViewBag.Search" class="form-control" placeholder="Ad, soyad veya telefon ara..." />
+    <button type="submit" class="btn btn-primary">Ara</button>
+    <a asp-action="Index" class="btn btn-secondary">Temizle</a>
+</form>
+
 <table class="table">
     <thead>
     <tr><th>ID</th><th>Ad</th><th>Soyad</th><th>Telefon</th><th>Doğum Tarihi</th><th>İşlemler</th></tr>

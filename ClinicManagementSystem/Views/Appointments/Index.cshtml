@@ -7,6 +7,18 @@
     <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Randevu</a>
 </div>
 
+<form method="get" class="filter-bar">
+    <input type="date" name="date" value="@ViewBag.Date" class="form-control" />
+    <select name="departmentId" class="form-select" asp-items="ViewBag.Departments">
+        <option value="">Tüm bölümler</option>
+    </select>
+    <select name="status" class="form-select" asp-items="Html.GetEnumSelectList<ClinicManagementSystem.Models.AppointmentStatus>()">
+        <option value="">Tüm durumlar</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filtrele</button>
+    <a asp-action="Index" class="btn btn-secondary">Temizle</a>
+</form>
+
 <div class="board">
     @foreach (var status in Enum.GetValues<AppointmentStatus>())
     {

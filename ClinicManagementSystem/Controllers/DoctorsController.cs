@@ -12,10 +12,19 @@ public class DoctorsController : Controller
     private readonly AppDbContext _context;
     public DoctorsController(AppDbContext context) { _context = context; }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? search, int? departmentId)
     {
-        var doctors = await _context.Doctors.Include(d => d.Department).ToListAsync();
-        return View(doctors);
+        var query = _context.Doctors.Include(d => d.Department).AsQueryable();
+        if (!string.IsNullOrWhiteSpace(search))
+            query = query.Where(d => d.FirstName.Contains(search) || d.LastName.Contains(search));
+        if (departmentId.HasValue)
+            query = query.Where(d => d.DepartmentID == departmentId.Value);
+
+        ViewBag.Search = search;
+        ViewBag.DepartmentId = departmentId;
+        ViewBag.Departments = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
+            await _context.Departments.ToListAsync(), "DepartmentID", "Name", departmentId);
+        return View(await query.ToListAsync());
     }
 
     public IActionResult Create()

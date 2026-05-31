@@ -16,6 +16,10 @@
     <header class="landing-nav">
         <div class="landing-brand"><i class="bi bi-heart-pulse"></i> Klinik YS</div>
         <div class="landing-actions">
+            <a href="#hakkimizda" class="landing-link">Hakkımızda</a>
+            <a href="#hizmetler" class="landing-link">Hizmetler</a>
+            <a href="#nasil" class="landing-link">Nasıl Çalışır</a>
+            <a href="#iletisim" class="landing-link">İletişim</a>
             <button class="icon-btn" title="Tema" onclick="(function(){var r=document.documentElement;var n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('theme',n);})()"><i class="bi bi-moon-stars"></i></button>
             <a class="btn btn-secondary" asp-controller="Account" asp-action="Login">Giriş Yap</a>
             <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
@@ -23,19 +27,69 @@
     </header>
 
     <section class="landing-hero">
+        <span class="hero-badge">7/24 dijital klinik</span>
         <h1>Sağlığınız için modern klinik yönetimi</h1>
-        <p>Randevularınızı kolayca alın, takip edin ve yönetin. Doktorlarımız ve bölümlerimizle hızlı, güvenli ve dijital bir deneyim.</p>
+        <p>Randevularınızı saniyeler içinde alın, doktorlarımızı ve bölümlerimizi keşfedin, geçmiş randevularınızı tek ekrandan takip edin. Hastalar, doktorlar ve klinik yönetimi için tek bir dijital platform.</p>
         <div class="landing-cta">
             <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Hemen Kayıt Ol</a>
             <a class="btn btn-secondary" asp-controller="Account" asp-action="Login">Giriş Yap</a>
         </div>
     </section>
 
-    <section class="landing-features">
-        <div class="landing-feature"><i class="bi bi-calendar-check"></i><h3>Kolay Randevu</h3><p>Birkaç tıkla istediğin bölüm ve doktordan randevu al.</p></div>
-        <div class="landing-feature"><i class="bi bi-clock-history"></i><h3>Geçmiş Takibi</h3><p>Tüm randevularını ve durumlarını tek ekrandan izle.</p></div>
-        <div class="landing-feature"><i class="bi bi-shield-check"></i><h3>Güvenli</h3><p>Verilerin güvenli şekilde saklanır, gizliliğin korunur.</p></div>
+    <section class="landing-stats">
+        <div class="lstat"><div class="lstat-num">12+</div><div class="lstat-lbl">Uzman Bölüm</div></div>
+        <div class="lstat"><div class="lstat-num">50+</div><div class="lstat-lbl">Doktor</div></div>
+        <div class="lstat"><div class="lstat-num">10.000+</div><div class="lstat-lbl">Mutlu Hasta</div></div>
+        <div class="lstat"><div class="lstat-num">7/24</div><div class="lstat-lbl">Online Randevu</div></div>
     </section>
+
+    <section id="hizmetler" class="landing-section">
+        <h2 class="landing-h2">Hizmetlerimiz</h2>
+        <p class="landing-sub">İhtiyacınız olan her şey tek platformda.</p>
+        <div class="landing-features">
+            <div class="landing-feature"><i class="bi bi-calendar-check"></i><h3>Kolay Randevu</h3><p>Birkaç tıkla istediğiniz bölüm ve doktordan randevu alın, dilediğiniz zaman iptal edin.</p></div>
+            <div class="landing-feature"><i class="bi bi-clock-history"></i><h3>Geçmiş Takibi</h3><p>Tüm randevularınızı ve durumlarını (bekliyor, onaylandı, tamamlandı) tek ekrandan izleyin.</p></div>
+            <div class="landing-feature"><i class="bi bi-people"></i><h3>Uzman Kadro</h3><p>Farklı branşlarda deneyimli doktorlarımız arasından size en uygun olanı seçin.</p></div>
+            <div class="landing-feature"><i class="bi bi-shield-check"></i><h3>Güvenli</h3><p>Verileriniz güvenli şekilde saklanır, gizliliğiniz her zaman korunur.</p></div>
+            <div class="landing-feature"><i class="bi bi-moon-stars"></i><h3>Karanlık Mod</h3><p>Gözlerinizi yormayan karanlık tema ile gece gündüz rahat kullanım.</p></div>
+            <div class="landing-feature"><i class="bi bi-phone"></i><h3>Her Cihazda</h3><p>Telefon, tablet ve bilgisayardan sorunsuz erişim sağlayın.</p></div>
+        </div>
+    </section>
+
+    <section id="nasil" class="landing-section landing-section-alt">
+        <h2 class="landing-h2">Nasıl Çalışır?</h2>
+        <p class="landing-sub">Üç basit adımda randevunuz hazır.</p>
+        <div class="landing-steps">
+            <div class="lstep"><div class="lstep-num">1</div><h3>Kayıt Ol</h3><p>Birkaç saniyede ücretsiz hesabınızı oluşturun.</p></div>
+            <div class="lstep"><div class="lstep-num">2</div><h3>Doktor Seç</h3><p>Branşa göre doktorları inceleyip uygun olanı seçin.</p></div>
+            <div class="lstep"><div class="lstep-num">3</div><h3>Randevu Al</h3><p>Tarih ve saati belirleyin, randevunuz onaya düşsün.</p></div>
+        </div>
+    </section>
+
+    <section id="hakkimizda" class="landing-section">
+        <div class="landing-about">
+            <h2 class="landing-h2">Hakkımızda</h2>
+            <p>Klinik YS, sağlık hizmetlerini dijitalleştirmek için tasarlanmış modern bir klinik yönetim platformudur. Amacımız, hastaların randevu süreçlerini kolaylaştırırken klinik yönetimini de tek bir panelden mümkün kılmaktır. Hastalar online randevu alabilir, doktorlar ve resepsiyon randevuları yönetebilir, yöneticiler ise tüm sistemi tek ekrandan takip edebilir.</p>
+            <p>Hasta odaklı, güvenli ve kullanımı kolay bir deneyim sunmak için sürekli geliştiriyoruz.</p>
+        </div>
+    </section>
+
+    <section id="iletisim" class="landing-section landing-section-alt">
+        <h2 class="landing-h2">İletişim</h2>
+        <p class="landing-sub">Sorularınız için bize ulaşın.</p>
+        <div class="landing-contact">
+            <div class="lcontact"><i class="bi bi-geo-alt"></i><span>Örnek Mah. Sağlık Cad. No:1, İstanbul</span></div>
+            <div class="lcontact"><i class="bi bi-telephone"></i><span>+90 212 000 00 00</span></div>
+            <div class="lcontact"><i class="bi bi-envelope"></i><span>info@klinikys.com</span></div>
+        </div>
+        <div class="landing-cta" style="margin-top:28px;">
+            <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Hemen Başla</a>
+        </div>
+    </section>
+
+    <footer class="landing-footer">
+        © 2026 Klinik YS — Bu bir deneme sitesidir, ciddiye almayınız!
+    </footer>
 </div>
 </body>
 </html>

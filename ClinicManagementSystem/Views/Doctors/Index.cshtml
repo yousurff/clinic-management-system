@@ -6,6 +6,15 @@
     <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Doktor</a>
 </div>
 
+<form method="get" class="filter-bar">
+    <input name="search" value="@ViewBag.Search" class="form-control" placeholder="Doktor ara..." />
+    <select name="departmentId" class="form-select" asp-items="ViewBag.Departments">
+        <option value="">Tüm bölümler</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filtrele</button>
+    <a asp-action="Index" class="btn btn-secondary">Temizle</a>
+</form>
+
 <table class="table">
     <thead><tr><th>ID</th><th>Ad</th><th>Soyad</th><th>Bölüm</th><th>Telefon</th><th>İşlemler</th></tr></thead>
     <tbody>

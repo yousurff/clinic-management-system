@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
+<a class="back-home" asp-controller="Landing" asp-action="Index"><i class="bi bi-arrow-left"></i> Ana sayfa</a>
 <button class="icon-btn theme-toggle-fixed" title="Tema"
         onclick="(function(){var r=document.documentElement;var n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('theme',n);})()">
     <i class="bi bi-moon-stars"></i>

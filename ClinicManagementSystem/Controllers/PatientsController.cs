@@ -15,9 +15,18 @@ public class PatientsController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? search)
     {
-        return View(await _context.Patients.ToListAsync());
+        var query = _context.Patients.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query = query.Where(p =>
+                p.FirstName.Contains(search) ||
+                p.LastName.Contains(search) ||
+                (p.Phone != null && p.Phone.Contains(search)));
+        }
+        ViewBag.Search = search;
+        return View(await query.ToListAsync());
     }
 
     public IActionResult Create() => View();

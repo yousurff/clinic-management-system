@@ -201,3 +201,46 @@ body {
 .landing-feature h3 { margin:14px 0 8px; }
 .landing-feature p { color:var(--text-muted); margin:0; font-size:14px; }
 @media (max-width:600px){ .landing-hero h1{ font-size:32px; } .landing-nav{ padding:16px 20px; } }
+
+.back-home {
+  position: fixed; top: 22px; left: 24px; z-index: 100;
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;
+}
+.back-home:hover { color: var(--primary); }
+
+.landing-link { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px; }
+.landing-link:hover { color: var(--primary); }
+.hero-badge { display:inline-block; background:var(--primary); color:#fff; padding:5px 14px; border-radius:999px; font-size:13px; font-weight:600; margin-bottom:18px; }
+
+.landing-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:20px; max-width:900px; margin:10px auto 40px; padding:0 40px; }
+.lstat { text-align:center; }
+.lstat-num { font-size:32px; font-weight:700; color:var(--primary); }
+.lstat-lbl { color:var(--text-muted); font-size:14px; margin-top:4px; }
+
+.landing-section { max-width:1000px; margin:0 auto; padding:60px 40px; }
+.landing-section-alt { background:var(--surface); border-radius:var(--radius); margin:20px auto; }
+.landing-h2 { font-size:30px; font-weight:700; text-align:center; margin:0 0 6px; }
+.landing-sub { text-align:center; color:var(--text-muted); margin:0 0 36px; }
+
+.landing-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+.lstep { text-align:center; padding:20px; }
+.lstep-num { width:48px; height:48px; border-radius:50%; background:var(--primary); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; margin-bottom:12px; }
+.lstep h3 { margin:0 0 6px; }
+.lstep p { color:var(--text-muted); margin:0; font-size:14px; }
+
+.landing-about { max-width:760px; margin:0 auto; text-align:center; }
+.landing-about p { color:var(--text-muted); font-size:16px; line-height:1.7; }
+
+.landing-contact { display:flex; flex-wrap:wrap; gap:24px; justify-content:center; }
+.lcontact { display:inline-flex; align-items:center; gap:10px; color:var(--text-muted); }
+.lcontact i { color:var(--primary); font-size:20px; }
+
+.landing-footer { text-align:center; color:var(--text-muted); padding:30px 20px; border-top:1px solid var(--border); font-size:14px; margin-top:20px; }
+
+.filter-bar {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin-bottom: 18px; max-width: 760px;
+}
+.filter-bar .form-control,
+.filter-bar .form-select { max-width: 240px; }
