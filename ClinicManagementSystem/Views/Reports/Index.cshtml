@@ -1,0 +1,75 @@
+@using ClinicManagementSystem.Models
+@{
+    ViewData["Title"] = "Raporlar";
+    var byDoctor = (List<ReportRow>)ViewBag.ByDoctor;
+    var byDept = (List<ReportRow>)ViewBag.ByDepartment;
+    var monthly = (List<ReportRow>)ViewBag.Monthly;
+    var history = ViewBag.PatientHistory as List<Appointment>;
+}
+
+<div class="page-head"><h2>Raporlar</h2></div>
+
+<div class="report-grid">
+    <div class="card"><div class="card-body">
+        <h3>Doktora Göre Randevular</h3>
+        <table class="table">
+            <thead><tr><th>Doktor</th><th>Randevu</th></tr></thead>
+            <tbody>
+            @foreach (var r in byDoctor) { <tr><td>@r.Label</td><td>@r.Count</td></tr> }
+            @if (byDoctor.Count == 0) { <tr><td colspan="2" class="text-muted">Veri yok</td></tr> }
+            </tbody>
+        </table>
+    </div></div>
+
+    <div class="card"><div class="card-body">
+        <h3>Bölüme Göre Randevular</h3>
+        <table class="table">
+            <thead><tr><th>Bölüm</th><th>Randevu</th></tr></thead>
+            <tbody>
+            @foreach (var r in byDept) { <tr><td>@r.Label</td><td>@r.Count</td></tr> }
+            @if (byDept.Count == 0) { <tr><td colspan="2" class="text-muted">Veri yok</td></tr> }
+            </tbody>
+        </table>
+    </div></div>
+
+    <div class="card"><div class="card-body">
+        <h3>Aylık Randevu İstatistiği</h3>
+        <table class="table">
+            <thead><tr><th>Ay</th><th>Randevu</th></tr></thead>
+            <tbody>
+            @foreach (var r in monthly) { <tr><td>@r.Label</td><td>@r.Count</td></tr> }
+            @if (monthly.Count == 0) { <tr><td colspan="2" class="text-muted">Veri yok</td></tr> }
+            </tbody>
+        </table>
+    </div></div>
+</div>
+
+<div class="card" style="margin-top:24px;">
+    <div class="card-body">
+        <h3 style="margin-top:0;">Hasta Randevu Geçmişi</h3>
+        <form method="get" class="filter-bar">
+            <select name="patientId" class="form-select" asp-items="ViewBag.Patients">
+                <option value="">Hasta seçin...</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Göster</button>
+        </form>
+        @if (history != null)
+        {
+            <table class="table">
+                <thead><tr><th>Doktor</th><th>Bölüm</th><th>Tarih</th><th>Durum</th></tr></thead>
+                <tbody>
+                @foreach (var a in history)
+                {
+                    <tr>
+                        <td>Dr. @a.Doctor?.FirstName @a.Doctor?.LastName</td>
+                        <td>@a.Doctor?.Department?.Name</td>
+                        <td>@a.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td><span class="status-badge status-@a.Status">@a.Status</span></td>
+                    </tr>
+                }
+                @if (history.Count == 0) { <tr><td colspan="4" class="text-muted">Bu hastanın randevusu yok.</td></tr> }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

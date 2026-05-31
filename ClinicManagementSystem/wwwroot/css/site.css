@@ -244,3 +244,7 @@ body {
 }
 .filter-bar .form-control,
 .filter-bar .form-select { max-width: 240px; }
+
+.report-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; align-items:start; }
+.report-grid h3 { margin-top:0; }
+.card .table { box-shadow:none; }

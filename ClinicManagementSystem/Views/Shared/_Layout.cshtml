@@ -27,6 +27,7 @@
                 <a class="nav-link-item @Active("Doctors")" asp-controller="Doctors" asp-action="Index"><i class="bi bi-person-badge"></i><span>Doktorlar</span></a>
                 <a class="nav-link-item @Active("Departments")" asp-controller="Departments" asp-action="Index"><i class="bi bi-building"></i><span>Bölümler</span></a>
                 <a class="nav-link-item @Active("Appointments")" asp-controller="Appointments" asp-action="Index"><i class="bi bi-calendar-check"></i><span>Randevular</span></a>
+                <a class="nav-link-item @Active("Reports")" asp-controller="Reports" asp-action="Index"><i class="bi bi-bar-chart"></i><span>Raporlar</span></a>
                 @if (User.IsInRole("Admin"))
                 {
                     <a class="nav-link-item @Active("Users")" asp-controller="Users" asp-action="Index"><i class="bi bi-shield-lock"></i><span>Kullanıcılar</span></a>
