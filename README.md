@@ -1,7 +1,11 @@
 # Advanced Clinic Management System
 
 **SE356 — Final Project**
-Author: Yusuf Talha Kamiloğlu
+
+Authors:
+- Yusuf Talha Kamiloğlu — 220706006
+- Hakan Ege Sarıçayır — 220706031
+
 
 A role-based clinic management web application built with **ASP.NET Core MVC (.NET 8)**.
 This is the improved and professionalized final version of the midterm project, migrated
