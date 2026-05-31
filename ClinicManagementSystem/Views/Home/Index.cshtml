@@ -3,6 +3,9 @@
     ViewData["Title"] = "Dashboard";
     var pending = (List<Appointment>)ViewBag.Pending;
     var approved = (List<Appointment>)ViewBag.Approved;
+    var statusData = (List<int>)ViewBag.StatusData;
+    var deptLabels = (List<string>)ViewBag.DeptLabels;
+    var deptData = (List<int>)ViewBag.DeptData;
 }
 
 <div class="stats-grid">
@@ -22,6 +25,17 @@
         <div class="stat-icon stat-icon-amber"><i class="bi bi-calendar-check"></i></div>
         <div><div class="stat-value">@ViewBag.AppointmentCount</div><div class="stat-label">Randevu</div></div>
     </div>
+</div>
+
+<div class="chart-grid">
+    <div class="card"><div class="card-body">
+        <h3 style="margin-top:0;">Randevu Durumları</h3>
+        <div class="chart-box"><canvas id="statusChart"></canvas></div>
+    </div></div>
+    <div class="card"><div class="card-body">
+        <h3 style="margin-top:0;">Bölüme Göre Randevular</h3>
+        <div class="chart-box"><canvas id="deptChart"></canvas></div>
+    </div></div>
 </div>
 
 <div class="card" style="margin-top:24px;">
@@ -93,3 +107,26 @@
         }
     </div>
 </div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+    Chart.defaults.color = '#94a3b8';
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Pending', 'Approved', 'Completed', 'Cancelled'],
+            datasets: [{ data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(statusData)), backgroundColor: ['#f59e0b', '#3b82f6', '#22c55e', '#ef4444'] }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+    new Chart(document.getElementById('deptChart'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(deptLabels)),
+            datasets: [{ label: 'Randevu', data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(deptData)), backgroundColor: '#0d9488' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+    });
+</script>
+}

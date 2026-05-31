@@ -1,12 +1,12 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClinicManagementSystem.Data;
 using ClinicManagementSystem.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicManagementSystem.Controllers;
-using Microsoft.AspNetCore.Authorization;
+
 [Authorize(Roles = "Admin,Receptionist")]
 public class HomeController : Controller
 {
@@ -34,6 +34,13 @@ public class HomeController : Controller
             .OrderBy(a => a.AppointmentDate)
             .ToListAsync();
 
+        var all = await _context.Appointments.Include(a => a.Doctor).ThenInclude(d => d.Department).ToListAsync();
+        ViewBag.StatusData = Enum.GetValues<AppointmentStatus>().Select(s => all.Count(a => a.Status == s)).ToList();
+        var deptGroups = all.GroupBy(a => a.Doctor?.Department?.Name ?? "—")
+            .Select(g => new { Name = g.Key, Count = g.Count() }).ToList();
+        ViewBag.DeptLabels = deptGroups.Select(d => d.Name).ToList();
+        ViewBag.DeptData = deptGroups.Select(d => d.Count).ToList();
+
         return View();
     }
 
@@ -55,7 +62,6 @@ public class HomeController : Controller
     public async Task<IActionResult> Complete(int id)
     {
         var a = await _context.Appointments.FindAsync(id);
-        // Sadece randevu saati geçtiyse tamamlanabilir (sunucu tarafı güvence)
         if (a != null && a.Status == AppointmentStatus.Approved && DateTime.Now >= a.AppointmentDate)
         {
             a.Status = AppointmentStatus.Completed;

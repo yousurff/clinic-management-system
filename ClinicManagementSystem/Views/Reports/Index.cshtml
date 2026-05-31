@@ -9,6 +9,13 @@
 
 <div class="page-head"><h2>Raporlar</h2></div>
 
+<div class="card" style="margin-bottom:24px;">
+    <div class="card-body">
+        <h3 style="margin-top:0;">Aylık Randevu Trendi</h3>
+        <div class="chart-box"><canvas id="monthlyChart"></canvas></div>
+    </div>
+</div>
+
 <div class="report-grid">
     <div class="card"><div class="card-body">
         <h3>Doktora Göre Randevular</h3>
@@ -73,3 +80,18 @@
         }
     </div>
 </div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+    Chart.defaults.color = '#94a3b8';
+    new Chart(document.getElementById('monthlyChart'), {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(monthly.Select(m => m.Label).ToList())),
+            datasets: [{ label: 'Randevu', data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(monthly.Select(m => m.Count).ToList())), borderColor: '#0d9488', backgroundColor: 'rgba(13,148,136,.15)', fill: true, tension: .3 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+    });
+</script>
+}

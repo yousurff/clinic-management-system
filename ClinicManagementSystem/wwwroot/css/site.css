@@ -248,3 +248,7 @@ body {
 .report-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; align-items:start; }
 .report-grid h3 { margin-top:0; }
 .card .table { box-shadow:none; }
+
+.chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px; }
+.chart-box { position:relative; height:280px; }
+@media (max-width:992px){ .chart-grid{ grid-template-columns:1fr; } }
