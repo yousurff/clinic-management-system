@@ -23,6 +23,10 @@
                         <div class="appt-card-main">@a.Patient?.FirstName @a.Patient?.LastName</div>
                         <div class="appt-card-sub">Dr. @a.Doctor?.FirstName @a.Doctor?.LastName</div>
                         <div class="appt-card-sub">@a.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</div>
+                        @if (!string.IsNullOrEmpty(a.Notes))
+                        {
+                            <div class="appt-card-sub"><i class="bi bi-sticky"></i> @a.Notes</div>
+                        }
                         <div class="appt-card-actions">
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-secondary" data-bs-toggle="dropdown">Durum ▾</button>

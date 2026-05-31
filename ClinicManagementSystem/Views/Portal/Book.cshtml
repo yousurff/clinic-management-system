@@ -1,0 +1,58 @@
+@{ ViewData["Title"] = "Randevu Al"; }
+
+<div class="card" style="max-width:600px;">
+    <div class="card-body">
+        <h2>Randevu Al</h2>
+        <form asp-action="Book" method="post">
+            <div class="mb-3">
+                <label class="form-label">Branş (Bölüm)</label>
+                <select id="deptFilter" class="form-select">
+                    <option value="">Tüm bölümler</option>
+                    @foreach (var dept in (List<ClinicManagementSystem.Models.Department>)ViewBag.DepartmentList)
+                    {
+                        <option value="@dept.DepartmentID">@dept.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Doktor</label>
+                <select name="doctorId" id="doctorSelect" class="form-select">
+                    <option value="">-- Doktor seçin --</option>
+                    @foreach (var d in (List<ClinicManagementSystem.Models.Doctor>)ViewBag.DoctorList)
+                    {
+                        <option value="@d.DoctorID" data-dept="@d.DepartmentID">@d.FirstName @d.LastName (@d.Department?.Name)</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tarih ve Saat</label>
+                <input name="appointmentDate" type="datetime-local" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Notlar</label>
+                <textarea name="notes" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Randevu Oluştur</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    (function () {
+        const deptFilter = document.getElementById('deptFilter');
+        const doctorSelect = document.getElementById('doctorSelect');
+        if (!deptFilter || !doctorSelect) return;
+        deptFilter.addEventListener('change', function () {
+            const dept = this.value;
+            Array.from(doctorSelect.options).forEach(function (opt) {
+                if (!opt.value) return;
+                opt.hidden = dept && opt.getAttribute('data-dept') !== dept;
+            });
+            const sel = doctorSelect.options[doctorSelect.selectedIndex];
+            if (sel && sel.hidden) doctorSelect.value = '';
+        });
+    })();
+</script>
+}

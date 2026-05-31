@@ -20,11 +20,23 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand"><i class="bi bi-heart-pulse"></i><span>Klinik YS</span></div>
         <nav class="sidebar-nav">
-            <a class="nav-link-item @Active("Home")" asp-controller="Home" asp-action="Index"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
-            <a class="nav-link-item @Active("Patients")" asp-controller="Patients" asp-action="Index"><i class="bi bi-people"></i><span>Hastalar</span></a>
-            <a class="nav-link-item @Active("Doctors")" asp-controller="Doctors" asp-action="Index"><i class="bi bi-person-badge"></i><span>Doktorlar</span></a>
-            <a class="nav-link-item @Active("Departments")" asp-controller="Departments" asp-action="Index"><i class="bi bi-building"></i><span>Bölümler</span></a>
-            <a class="nav-link-item @Active("Appointments")" asp-controller="Appointments" asp-action="Index"><i class="bi bi-calendar-check"></i><span>Randevular</span></a>
+            @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+            {
+                <a class="nav-link-item @Active("Home")" asp-controller="Home" asp-action="Index"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+                <a class="nav-link-item @Active("Patients")" asp-controller="Patients" asp-action="Index"><i class="bi bi-people"></i><span>Hastalar</span></a>
+                <a class="nav-link-item @Active("Doctors")" asp-controller="Doctors" asp-action="Index"><i class="bi bi-person-badge"></i><span>Doktorlar</span></a>
+                <a class="nav-link-item @Active("Departments")" asp-controller="Departments" asp-action="Index"><i class="bi bi-building"></i><span>Bölümler</span></a>
+                <a class="nav-link-item @Active("Appointments")" asp-controller="Appointments" asp-action="Index"><i class="bi bi-calendar-check"></i><span>Randevular</span></a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="nav-link-item @Active("Users")" asp-controller="Users" asp-action="Index"><i class="bi bi-shield-lock"></i><span>Kullanıcılar</span></a>
+                }
+            }
+            @if (User.IsInRole("Patient"))
+            {
+                <a class="nav-link-item @Active("Portal")" asp-controller="Portal" asp-action="Index"><i class="bi bi-calendar-check"></i><span>Randevularım</span></a>
+                <a class="nav-link-item" asp-controller="Portal" asp-action="Book"><i class="bi bi-plus-circle"></i><span>Randevu Al</span></a>
+            }
         </nav>
     </aside>
     <div class="main">
@@ -37,6 +49,7 @@
                     <span class="topbar-user"><i class="bi bi-person-circle"></i> @User.Identity.Name</span>
                     <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
                         <button type="submit" class="icon-btn" title="Çıkış"><i class="bi bi-box-arrow-right"></i></button>
+                        <a class="icon-btn" asp-controller="Settings" asp-action="Index" title="Ayarlar"><i class="bi bi-gear"></i></a>
                     </form>
                 }
                 <button class="icon-btn" id="themeToggle" title="Tema değiştir"><i class="bi bi-moon-stars"></i></button>

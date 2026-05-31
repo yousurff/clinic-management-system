@@ -1,0 +1,24 @@
+@model IEnumerable<ClinicManagementSystem.Models.UserListItemViewModel>
+@{ ViewData["Title"] = "Kullanıcılar"; }
+
+<div class="page-head"><h2>Kullanıcılar</h2></div>
+
+<table class="table">
+    <thead><tr><th>E-posta</th><th>Roller</th><th>Şifre Sıfırla</th></tr></thead>
+    <tbody>
+    @foreach (var u in Model)
+    {
+        <tr>
+            <td>@u.Email</td>
+            <td>@u.Roles</td>
+            <td>
+                <form asp-action="ResetPassword" method="post" style="display:flex; gap:6px;">
+                    <input type="hidden" name="id" value="@u.Id" />
+                    <input name="newPassword" class="form-control" placeholder="Yeni şifre" style="max-width:170px;" />
+                    <button type="submit" class="btn btn-sm btn-warning">Sıfırla</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

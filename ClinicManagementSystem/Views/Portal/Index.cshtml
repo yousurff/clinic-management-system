@@ -1,0 +1,37 @@
+@using ClinicManagementSystem.Models
+@model IEnumerable<ClinicManagementSystem.Models.Appointment>
+@{ ViewData["Title"] = "Randevularım"; }
+
+<div class="page-head">
+    <h2>Randevularım</h2>
+    <a class="btn btn-primary" asp-action="Book"><i class="bi bi-plus-lg"></i> Randevu Al</a>
+</div>
+
+<table class="table">
+    <thead><tr><th>Doktor</th><th>Bölüm</th><th>Tarih</th><th>Durum</th><th>Not</th><th>İşlem</th></tr></thead>
+    <tbody>
+    @foreach (var a in Model)
+    {
+        <tr>
+            <td>Dr. @a.Doctor?.FirstName @a.Doctor?.LastName</td>
+            <td>@a.Doctor?.Department?.Name</td>
+            <td>@a.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</td>
+            <td><span class="status-badge status-@a.Status">@a.Status</span></td>
+            <td class="text-muted">@a.Notes</td>
+            <td>
+                @if (a.Status == AppointmentStatus.Pending || a.Status == AppointmentStatus.Approved)
+                {
+                    <form asp-action="Cancel" method="post">
+                        <input type="hidden" name="id" value="@a.AppointmentID" />
+                        <button type="submit" class="btn btn-sm btn-danger">İptal Et</button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+    @if (!Model.Any())
+    {
+        <tr><td colspan="5" class="text-muted">Henüz randevun yok.</td></tr>
+    }
+    </tbody>
+</table>

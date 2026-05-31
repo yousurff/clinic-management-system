@@ -8,5 +8,7 @@ public class Patient
     public string? Phone { get; set; }
     public DateOnly? BirthDate { get; set; }
 
+    public string? UserId { get; set; } // giriş hesabıyla bağlantı
+
     public List<Appointment> Appointments { get; set; } = new();
 }

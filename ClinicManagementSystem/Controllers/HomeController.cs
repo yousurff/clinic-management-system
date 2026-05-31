@@ -6,7 +6,8 @@ using ClinicManagementSystem.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicManagementSystem.Controllers;
-
+using Microsoft.AspNetCore.Authorization;
+[Authorize(Roles = "Admin,Receptionist")]
 public class HomeController : Controller
 {
     private readonly AppDbContext _context;

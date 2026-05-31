@@ -4,7 +4,8 @@ using ClinicManagementSystem.Data;
 using ClinicManagementSystem.Models;
 
 namespace ClinicManagementSystem.Controllers;
-
+using Microsoft.AspNetCore.Authorization;
+[Authorize(Roles = "Admin,Receptionist")]
 public class PatientsController : Controller
 {
     private readonly AppDbContext _context;
