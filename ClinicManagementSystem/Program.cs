@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ClinicManagementSystem.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 builder.Services.AddControllersWithViews();
 

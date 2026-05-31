@@ -4,7 +4,11 @@
 
 <div class="page-head">
     <h2>Randevular</h2>
-    <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Randevu</a>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a class="btn btn-secondary" asp-action="ExportExcel"><i class="bi bi-file-earmark-excel"></i> Excel</a>
+        <a class="btn btn-secondary" asp-action="ExportPdf"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+        <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Yeni Randevu</a>
+    </div>
 </div>
 
 <form method="get" class="filter-bar">
